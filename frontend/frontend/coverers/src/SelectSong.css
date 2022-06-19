@@ -1,0 +1,13 @@
+.song{
+    cursor: pointer;
+   
+}
+
+.song:hover{
+    background-color: #dc3545;
+}
+
+.hr{
+    border: 5px solid #dc3545;
+    
+}
