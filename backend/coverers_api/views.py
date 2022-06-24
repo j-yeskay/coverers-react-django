@@ -2,16 +2,18 @@
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework import generics
-from coverers.models import Cover, FollowingFollower
+from coverers.models import Cover, FollowingFollower, Like
 from accounts.models import Account
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
+import json
 
 
 from . serializers import AccountsSerializer, CoverSerializer, MyProfileSerializer, AccountsSerializer
+
 
 
 
@@ -131,6 +133,47 @@ class CoverUpload(APIView):
 
 #     serializer = CoverSerializer(data = request.data)
 #     if serializer.is_valid()
+
+
+@api_view(['POST'])
+def like(request, pk):
+    cover = Cover.objects.get(id = pk)
+    user = Account.objects.get(id = request.user.id)
+
+    Like.objects.create(cover = cover, user = user)
+
+    return Response(status = status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+def unlike(request, pk):
+    cover = Cover.objects.get(id = pk)
+    user = Account.objects.get(id = request.user.id)
+
+    like = Like.objects.get(user = user, cover = cover)
+
+    like.delete()
+
+    return Response(status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def already_liked(request, pk):
+    cover = Cover.objects.get(id = pk)
+    user = Account.objects.get(id = request.user.id)
+    already_liked = False
+    for like in cover.likes.all():
+        if user == like.user:
+            already_liked = True
+    response = json.dumps(already_liked)
+    return Response(response, status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def top_covers(request, song):
+    covers = Cover.objects.all()
+    serializer = CoverSerializer(covers, many = True)
+    return Response(serializer.data, status = status.HTTP_200_OK)
 
 
 

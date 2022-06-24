@@ -31,6 +31,7 @@ export default function SelectSong(){
     const [isHovering, setIsHovering] = useState(false);
 
     const onClickHandler = (song) => {
+        console.log('Clicked!')
         setText(song.data.name)
         setSongs([])
     }

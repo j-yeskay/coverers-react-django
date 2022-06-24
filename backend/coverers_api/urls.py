@@ -12,4 +12,8 @@ urlpatterns = [
     path('unfollow/<int:pk>/', views.unfollow, name = "unfollow"),
     path('upload/', views.CoverUpload.as_view(), name = "upload"),
     path('getcurrentuser/', views.get_current_user, name = "getcurrentuser"),
+    path('like/<int:pk>/', views.like, name = "like"),
+    path('unlike/<int:pk>/', views.unlike, name = "unlike"),
+    path('already_liked/<int:pk>/', views.already_liked, name = "already_liked"),
+    path('topcovers/<str:song>/', views.top_covers, name = "topcovers"),
 ]

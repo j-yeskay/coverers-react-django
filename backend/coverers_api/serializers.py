@@ -1,16 +1,22 @@
+from dataclasses import field
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 from accounts.models import Account
-from coverers.models import Cover, FollowingFollower
+from coverers.models import Cover, FollowingFollower, Like
 from rest_framework.permissions import IsAuthenticated
 
 
 
 class CoverSerializer(serializers.ModelSerializer):
+    likes = serializers.SerializerMethodField()
     # permission_classes = [IsAuthenticated]
     class Meta:
         model = Cover
-        fields = ('id', 'song', 'coverer', 'video')
+        fields = ('id', 'song', 'coverer', 'video', 'likes')
+    
+
+    def get_likes(self, obj):
+        return LikeSerializer(obj.likes.all(), many=True).data
     
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -58,10 +64,16 @@ class MyProfileSerializer(serializers.ModelSerializer):
         return FollowersSerializer(obj.followers.all(), many=True).data
     
    
-        
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ('id', 'user', 'cover')
     
-
-
+    # def to_representation(self, instance):
+    #     ret = super().to_representation(instance)
+    #     ret['user'] = {"id": instance.user.id}
+    #     return ret
+    
 
 
 class AccountsSerializer(serializers.ModelSerializer):

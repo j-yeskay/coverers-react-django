@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import App2 from './App2';
+
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
@@ -22,6 +24,7 @@ const routing = (
         <Routes>
           <Route exact path = '/' element = { <Index/> } />
           <Route exact path = '/home' element = { <App/> } />
+        <Route exact path='/topcovers' element={< App2 />} />  
           <Route exact path = '/register' element = { <Register/> } />
           <Route exact path = '/login' element = { <Login/> } />
           <Route exact path = '/logout' element = { <Logout/> } />

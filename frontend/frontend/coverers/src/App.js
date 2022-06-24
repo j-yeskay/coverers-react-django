@@ -34,7 +34,8 @@ function App() {
             <center>
             <u><h1>Latest Covers</h1></u>
             <br /><br />
-            <CoversLoading isLoading = { appState.loading } covers = { appState.covers } />
+                <CoversLoading isLoading={appState.loading} covers={appState.covers} />
+
             </center>
         </div>
     );

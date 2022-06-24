@@ -25,3 +25,18 @@ class FollowingFollower(models.Model):
     
     def __str__(self):
         return f"{self.user} follows {self.following_user}"
+
+
+class Like(models.Model):
+    cover = models.ForeignKey(Cover, related_name = "likes", on_delete = models.CASCADE)
+    user = models.ForeignKey(Account, related_name = "likes", on_delete = models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields = ['cover', 'user'], name = "unique_likes")
+        ]
+
+    def __str__(self):
+        return f"{self.cover} liked by {self.user}"
+
+   
